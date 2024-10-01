@@ -4,6 +4,7 @@ import { faRightToBracket, faSquarePlus } from '@fortawesome/free-solid-svg-icon
 import { GamemodesService } from '../../../services/gamemodes.service';
 import { Gamemode } from '../../../models/gamemode.model';
 import { PlayersService } from '../../../services/players.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -28,10 +29,13 @@ export class HomeComponent {
     canCreateRoom = false;
     canJoinRoom = false;
 
+    errorMessage!: string;
+
     constructor(
         private readonly gamemodesService: GamemodesService,
         private readonly roomsService: RoomsService,
-        private readonly playersService: PlayersService
+        private readonly playersService: PlayersService,
+        private readonly router: Router
     ) { }
 
     ngOnInit() {
@@ -78,7 +82,7 @@ export class HomeComponent {
     }
 
     updateCanJoinRoom() {
-        this.canJoinRoom = !!this.name && this.roomCode.length === 6;
+        this.canJoinRoom = !!this.name && this.roomCode.length === 5;
     }
 
     createRoom() {
@@ -91,11 +95,9 @@ export class HomeComponent {
                     if (!!data) {
                         this.playersService.addPlayerToRoom(this.name, data.roomCode)
                             .subscribe({
-                                next: (response) => {
-                                    console.log('Player added successfully:', response);
-                                },
-                                error: (error) => {
-                                    console.error('Error adding player:', error);
+                                next: () => {
+                                    this.playersService.setCurrentPlayer(this.name);
+                                    this.router.navigate([`/room/${data.roomCode}`]);
                                 }
                             });
                     }
@@ -107,7 +109,16 @@ export class HomeComponent {
         if (!this.canJoinRoom) {
             return;
         }
-        this.playersService.addPlayerToRoom(this.name, this.roomCode);
+        this.playersService.addPlayerToRoom(this.name, this.roomCode)
+            .subscribe({
+                next: () => {
+                    this.playersService.setCurrentPlayer(this.name);
+                    this.router.navigate([`/room/${this.roomCode}`]);
+                },
+                error: () => {
+                    this.errorMessage = 'La salle est introuvable ou ce nom est déjà pris.';
+                }
+            });
     }
 }
 

@@ -9,7 +9,7 @@ export class RoomsService {
 
     constructor(private readonly httpClient: HttpClient) { }
 
-    getRoomByCode(code: string) {
+    getRoomFromCode(code: string) {
         return this.httpClient.get(`${this.apiUrl}/${code}`);
     }
 
@@ -25,9 +25,7 @@ export class RoomsService {
         });
     }
 
-    deleteRoom(code: string) {
-        return this.httpClient.delete(`${this.apiUrl}/delete`, {
-            params: { code }
-        });
+    deleteRoom(roomCode: string) {
+        return this.httpClient.delete(`${this.apiUrl}/${roomCode}/delete`);
     }
 }

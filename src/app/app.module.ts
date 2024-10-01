@@ -7,9 +7,11 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { HomeComponent } from './components/pages/home/home.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GamemodeCardComponent } from './components/shared/gamemode-card/gamemode-card.component';
+import { RoomComponent } from './components/pages/room/room.component';
+import { PlayerTileComponent } from './components/shared/player-tile/player-tile.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, GamemodeCardComponent],
+  declarations: [AppComponent, HomeComponent, GamemodeCardComponent, RoomComponent, PlayerTileComponent],
   imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
   providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent],

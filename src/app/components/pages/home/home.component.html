@@ -54,7 +54,7 @@
                     <label class="form-control w-full">
                         <div class="label">
                             <span class="text-base font-light">Temps pour
-                                répondre : {{ timeToAnswer.value }} s</span>
+                                répondre : {{ timeToAnswer.value }}s</span>
                         </div>
                         <input #timeToAnswer type="range" min="10" max="90"
                             value="30"
@@ -73,14 +73,19 @@
                     <div class="label">
                         <span class="text-base font-light">Entrez le code</span>
                     </div>
-                    <input type="text" placeholder="123456" type="text"
+                    <input type="text" placeholder="12345" type="text"
                         inputmode="numeric" pattern="[0-9]*"
-                        maxlength="6"
+                        maxlength="5"
                         (input)="onRoomCodeChange($event)"
-                        class="input border-solid border-2 border-dark focus:border-primary bg-black w-full" />
+                        class="input border-solid border-2 border-black focus:border-primary bg-black w-full" />
+                    <div *ngIf="errorMessage"
+                        class="bg-error rounded-lg p-2 mt-2">
+                        <span class="text-sm text-black">{{ errorMessage
+                            }}</span>
+                    </div>
                 </label>
                 <button
-                    class="btn btn-primary text-base"
+                    class="btn btn-primary text-base w-full"
                     (click)="joinRoom()"
                     [class.disabled]="!canJoinRoom">Rejoindre la
                     salle</button>

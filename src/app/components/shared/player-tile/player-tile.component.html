@@ -1,0 +1,7 @@
+<div
+    class="border-2 border-primary w-full rounded-lg flex justify-center items-center p-4"
+    [class.bg-dark]="isCurrentPlayer">
+    <p class="font-semibold text-base">{{ name }}{{ isCurrentPlayer ? ' (Vous)'
+        : ''
+        }}</p>
+</div>
