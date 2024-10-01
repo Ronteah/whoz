@@ -1,0 +1,24 @@
+<div class="card rounded-lg bg-dark min-w-64">
+    <figure class="h-24">
+        <img
+            [src]="gamemode.imgSrc"
+            [alt]="gamemode.title" />
+    </figure>
+    <div class="card-body p-4">
+        <div class="flex justify-between">
+            <h2 class="card-title">{{ gamemode.title }}</h2>
+            <span *ngIf="gamemode.isNew"
+                class="badge badge-primary mt-1">new</span>
+        </div>
+        <p class="font-light mb-2">{{ gamemode.description
+            }}</p>
+        <div class="card-actions w-full">
+            <button
+                class="btn bg-black w-full"
+                [class.disabled]="!gamemode.isAvailable"
+                [class.selected]="isSelected"
+                (click)="selectGamemode()">{{ gamemode.isAvailable ? isSelected
+                ? 'Sélectionné' : 'Choisir' : 'Bientôt disponible' }}</button>
+        </div>
+    </div>
+</div>

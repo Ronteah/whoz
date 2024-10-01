@@ -1,0 +1,95 @@
+<div class="flex flex-col gap-8 items-center w-full">
+    <div class="flex flex-col gap-8 items-center w-full">
+        <img src="assets/images/logo.svg" alt="Logo Whoz"
+            class="w-44 my-4">
+        <label class="form-control w-full">
+            <div class="label">
+                <h1 class="text-2xl font-semibold">Entrez votre nom</h1>
+            </div>
+            <input #name type="text" placeholder="Votre nom"
+                class="input border-solid border-2 border-dark focus:border-primary bg-black w-full"
+                (input)="onNameChange($event)" />
+        </label>
+        <hr class="h-[2px] bg-dark border-none w-full" />
+        <div role="tablist" class="tabs tabs-boxed bg-dark w-full"
+            (click)="toggleIsCreation()">
+            <a role="tab" class="tab"
+                [ngClass]="{'tab-active': isCreation}">
+                <fa-icon [icon]="iconCreate" class="mr-2 fa-lg"></fa-icon>
+                <h4 class="text-base">Créer une salle</h4>
+            </a>
+            <a role="tab" class="tab"
+                [ngClass]="{'tab-active': !isCreation}">
+                <fa-icon [icon]="iconJoin" class="mr-2 fa-lg"></fa-icon>
+                <h4 class="text-base">Rejoindre une salle</h4>
+            </a>
+        </div>
+    </div>
+
+    <div class="w-full flex flex-col gap-4">
+        <h1 class="text-2xl font-semibold">{{isCreation ? 'Créer une salle' :
+            'Rejoindre une salle' }}</h1>
+
+        <div class="relative">
+            <div *ngIf="isCreation" class="flex flex-col gap-4">
+                <div
+                    class="flex gap-4 w-full overflow-x-scroll rounded-lg no-scrollbar">
+                    <app-gamemode-card *ngFor="let gamemode of gamemodes"
+                        [gamemode]="gamemode"
+                        [selectedId]="selectedGamemode"
+                        (emitSelectedGamemode)="selectGamemode($event)"></app-gamemode-card>
+                </div>
+                <div class="w-full bg-dark p-4 flex flex-col gap-8 rounded-lg">
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="text-base font-light">Nombre de
+                                questions : {{ numberOfQuestions.value }}</span>
+                        </div>
+                        <input #numberOfQuestions type="range" min="5" max="30"
+                            value="10"
+                            class="range range-primary range-sm"
+                            step="5"
+                            (input)="onNumberOfQuestionsChange($event)" />
+                    </label>
+                    <label class="form-control w-full">
+                        <div class="label">
+                            <span class="text-base font-light">Temps pour
+                                répondre : {{ timeToAnswer.value }} s</span>
+                        </div>
+                        <input #timeToAnswer type="range" min="10" max="90"
+                            value="30"
+                            class="range range-primary range-sm"
+                            step="10" (input)="onTimeToAnswerChange($event)" />
+                    </label>
+                    <button class="btn btn-primary text-base mt-4"
+                        (click)="createRoom()"
+                        [class.disabled]="!canCreateRoom">Créer la
+                        salle</button>
+                </div>
+            </div>
+            <div *ngIf="!isCreation"
+                class="w-full bg-dark p-4 flex flex-col gap-8 rounded-lg">
+                <label class="form-control w-full">
+                    <div class="label">
+                        <span class="text-base font-light">Entrez le code</span>
+                    </div>
+                    <input type="text" placeholder="123456" type="text"
+                        inputmode="numeric" pattern="[0-9]*"
+                        maxlength="6"
+                        (input)="onRoomCodeChange($event)"
+                        class="input border-solid border-2 border-dark focus:border-primary bg-black w-full" />
+                </label>
+                <button
+                    class="btn btn-primary text-base"
+                    (click)="joinRoom()"
+                    [class.disabled]="!canJoinRoom">Rejoindre la
+                    salle</button>
+            </div>
+
+            <div
+                class="absolute top-0 -left-12 w-8 h-full bg-dark rounded-lg md:hidden"></div>
+            <div
+                class="absolute top-0 -right-12 w-8 h-full bg-dark rounded-lg md:hidden"></div>
+        </div>
+    </div>
+</div>

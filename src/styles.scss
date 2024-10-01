@@ -1,1 +1,39 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+$primary: #15B7FF;
+$light: #15B7FF;
+$dark: #252755;
+$white: #FAFAFA;
+$black: #0F1029;
+
+html,
+body {
+    background-color: $black !important;
+    font-family: 'Inter', sans-serif;
+    @apply text-white text-xs bg-black overflow-x-hidden m-0 p-0 min-w-full min-h-full;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    /* IE and Edge */
+    -ms-overflow-style: none;
+    /* Firefox */
+    scrollbar-width: none;
+}
+
+.range {
+    &::-webkit-slider-runnable-track {
+        @apply bg-black;
+    }
+
+    &::-moz-range-track {
+        @apply bg-black;
+    }
+}
