@@ -59,6 +59,10 @@ export class RoomComponent {
         });
     }
 
+    ngOnDestroy() {
+        this.deleteRoom();
+    }
+
     refreshPlayers() {
         this.playersService.getPlayersFromRoom(this.roomCode)
             .subscribe({
@@ -82,15 +86,19 @@ export class RoomComponent {
             .subscribe({
                 next: (data: any) => {
                     if (data?.numberOfPlayersLeft === 0) {
-                        this.roomsService.deleteRoom(this.roomCode)
-                            .subscribe({
-                                next: () => {
-                                    this.router.navigate(['/']);
-                                }
-                            });
+                        this.deleteRoom();
                     } else {
                         this.router.navigate(['/']);
                     }
+                }
+            });
+    }
+
+    private deleteRoom() {
+        this.roomsService.deleteRoom(this.roomCode)
+            .subscribe({
+                next: () => {
+                    this.router.navigate(['/']);
                 }
             });
     }
