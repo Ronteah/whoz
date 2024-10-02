@@ -9,9 +9,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GamemodeCardComponent } from './components/shared/gamemode-card/gamemode-card.component';
 import { RoomComponent } from './components/pages/room/room.component';
 import { PlayerTileComponent } from './components/shared/player-tile/player-tile.component';
+import { GameComponent } from './components/pages/game/game.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, GamemodeCardComponent, RoomComponent, PlayerTileComponent],
+  declarations: [AppComponent, HomeComponent, GamemodeCardComponent, RoomComponent, PlayerTileComponent, GameComponent],
   imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
   providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent],

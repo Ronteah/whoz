@@ -4,7 +4,15 @@
             class="w-44 my-4">
         <div class="flex justify-between items-center w-full">
             <div class="flex flex-col gap-1">
-                <h1 class="text-2xl font-semibold">Code : {{ roomCode }}</h1>
+                <div class="flex gap-2 items-center">
+                    <h1 class="text-2xl font-semibold">Code : {{ roomCode
+                        }}</h1>
+                    <div class="p-2 bg-dark rounded-lg">
+                        <fa-icon [icon]="copied ? iconCheck : iconCopy"
+                            class="fa-lg text-white"
+                            (click)="copyToClipboard()"></fa-icon>
+                    </div>
+                </div>
                 <span class="font-light text-base">Mode : {{ room.gamemode.title
                     }}</span>
             </div>
@@ -21,7 +29,7 @@
             </div>
         </div>
     </div>
-    <div *ngIf="players.length > 0"
+    <div *ngIf="!!players"
         class="relative w-full flex flex-col items-start gap-4">
         <h1 class="text-lg font-light">Participants : {{ players.length }}</h1>
         <div class="w-full h-[55vh] overflow-y-auto flex flex-col gap-4">
@@ -29,13 +37,11 @@
                 [currentPlayer]="name"
                 class="w-full"></app-player-tile>
         </div>
-        <div
-            class="absolute top-0 -left-12 w-8 h-full bg-dark rounded-lg md:hidden"></div>
-        <div
-            class="absolute top-0 -right-12 w-8 h-full bg-dark rounded-lg md:hidden"></div>
     </div>
     <div class="flex flex-col gap-4 w-full">
-        <button *ngIf="isRoomOwner" class="btn btn-primary w-full text-base"
+        <button *ngIf="isRoomOwner"
+            [class.disabled]="!canStart"
+            class="btn btn-primary w-full text-base"
             (click)="startGame()">Lancer la
             partie</button>
         <button *ngIf="!isRoomOwner"

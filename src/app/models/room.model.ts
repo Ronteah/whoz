@@ -8,4 +8,7 @@ export interface Room {
     questions: Question[];
     time: number;
     gamemode: Gamemode;
+    date: Date;
+    status: string;
+    owner: string;
 }

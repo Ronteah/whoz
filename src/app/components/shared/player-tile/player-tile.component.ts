@@ -8,6 +8,8 @@ import { Component, Input } from '@angular/core';
 export class PlayerTileComponent {
     @Input() name!: string;
     @Input() currentPlayer!: string;
+    @Input() selected = false;
+    @Input() bigger = false;
 
     isCurrentPlayer = false;
 

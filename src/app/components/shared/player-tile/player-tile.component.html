@@ -1,7 +1,10 @@
 <div
     class="border-2 border-primary w-full rounded-lg flex justify-center items-center p-4"
-    [class.bg-dark]="isCurrentPlayer">
-    <p class="font-semibold text-base">{{ name }}{{ isCurrentPlayer ? ' (Vous)'
-        : ''
-        }}</p>
+    [class.h-full]="bigger"
+    [class.border-none]="bigger"
+    [class.bg-primary]="selected"
+    [class.text-black]="selected"
+    [class.bg-dark]="(!bigger && isCurrentPlayer) || bigger">
+    <p class="font-semibold text-base truncate">{{ name }}{{ isCurrentPlayer ?
+        ' (Vous)' : '' }}</p>
 </div>
