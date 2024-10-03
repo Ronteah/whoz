@@ -10,9 +10,10 @@ import { GamemodeCardComponent } from './components/shared/gamemode-card/gamemod
 import { RoomComponent } from './components/pages/room/room.component';
 import { PlayerTileComponent } from './components/shared/player-tile/player-tile.component';
 import { GameComponent } from './components/pages/game/game.component';
+import { BaseComponent } from './components/shared/base/base.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, GamemodeCardComponent, RoomComponent, PlayerTileComponent, GameComponent],
+  declarations: [AppComponent, HomeComponent, GamemodeCardComponent, RoomComponent, PlayerTileComponent, GameComponent, BaseComponent],
   imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
   providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent],

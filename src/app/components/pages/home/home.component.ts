@@ -5,6 +5,8 @@ import { GamemodesService } from '../../../services/gamemodes.service';
 import { Gamemode } from '../../../models/gamemode.model';
 import { PlayersService } from '../../../services/players.service';
 import { Router } from '@angular/router';
+import { BaseComponent } from '../../shared/base/base.component';
+import { takeUntil } from 'rxjs';
 
 
 @Component({
@@ -12,7 +14,7 @@ import { Router } from '@angular/router';
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent extends BaseComponent {
     iconCreate = faSquarePlus;
     iconJoin = faRightToBracket;
 
@@ -36,10 +38,13 @@ export class HomeComponent {
         private readonly roomsService: RoomsService,
         private readonly playersService: PlayersService,
         private readonly router: Router
-    ) { }
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.gamemodesService.getGamemodes()
+            .pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe({
                 next: (data: any) => {
                     if (!!data) {
@@ -90,10 +95,12 @@ export class HomeComponent {
             return;
         }
         this.roomsService.createRoom(this.numberOfQuestions, this.timeToAnswer, this.selectedGamemode)
+            .pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe({
                 next: (data: any) => {
                     if (!!data) {
                         this.playersService.addPlayerToRoom(this.name, data.roomCode)
+                            .pipe(takeUntil(this.ngUnsubscribe$))
                             .subscribe({
                                 next: () => {
                                     this.playersService.setCurrentPlayer(this.name);
@@ -110,6 +117,7 @@ export class HomeComponent {
             return;
         }
         this.playersService.addPlayerToRoom(this.name, this.roomCode)
+            .pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe({
                 next: () => {
                     this.playersService.setCurrentPlayer(this.name);
