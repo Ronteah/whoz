@@ -56,6 +56,16 @@ export class RoomsService {
         });
     }
 
+    answerQuestion(roomCode: string, answer: string) {
+        const body = {
+            answer
+        };
+
+        return this.httpClient.post(`${this.apiUrl}/${roomCode}/answer`, body, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
     listenToGameStarted(roomCode: string): Observable<string> {
         return new Observable<string>((observer) => {
             this.socket.on(`gameStarted-${roomCode}`, () => {
@@ -69,17 +79,25 @@ export class RoomsService {
     }
 
     nextQuestion(roomCode: string) {
-        return this.httpClient.get(`${this.apiUrl}/${roomCode}/next`);
+        return this.httpClient.get(`${this.apiUrl}/${roomCode}/next`)
+            .subscribe({
+                next: () => { }
+            });
     }
 
     listenToNextQuestion(roomCode: string): Observable<string> {
         return new Observable<string>((observer) => {
-            this.socket.on(`nextQuestion-${roomCode}`, (nextQuestionIndex: string) => {
-                observer.next(nextQuestionIndex);
+            this.socket.on(`nextQuestion-${roomCode}`, (question: string) => {
+                observer.next(question);
+            });
+
+            this.socket.on(`gameOver-${roomCode}`, () => {
+                observer.next('');
             });
 
             return () => {
                 this.socket.off(`nextQuestion-${roomCode}`);
+                this.socket.off(`gameOver-${roomCode}`);
             };
         });
     }

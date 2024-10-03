@@ -17,6 +17,9 @@ export class GameComponent {
     answered = false;
     room!: Room;
     roomCode = '';
+    currentQuestion = '';
+    currentQuestionIndex = 1;
+    questionsAdvance = '';
 
     iconLeave = faClose;
 
@@ -40,6 +43,8 @@ export class GameComponent {
                     this.roomCode = room.code;
                     this.countdown = room.time;
                     this.stride = 100 / room.time;
+                    this.currentQuestion = room.questions[0].text;
+                    this.questionsAdvance = `${this.currentQuestionIndex}/${this.room.questions.length}`;
                 }
             }
         });
@@ -65,6 +70,23 @@ export class GameComponent {
                 }
             });
 
+        this.roomsService.listenToNextQuestion(this.room.code)
+            .subscribe({
+                next: (data) => {
+                    if (!!data) {
+                        this.currentQuestion = data;
+                        this.answered = false;
+                        this.resetCoutdown();
+                    } else {
+                        if (this.room.owner === this.name) {
+                            this.leaveRoom();
+                        } else {
+                            this.router.navigate(['/']);
+                        }
+                    }
+                }
+            });
+
         setInterval(() => {
             if (this.countdown > 0) {
                 this.countdown--;
@@ -73,12 +95,22 @@ export class GameComponent {
         }, 1000);
     }
 
+    ngOnDestroy() {
+        if (this.room.owner === this.name) {
+            this.deleteRoom();
+        }
+    }
+
     selectPlayer(player: string) {
         this.selectedPlayer = player;
     }
 
     sendAnswer() {
         this.answered = true;
+        this.roomsService.answerQuestion(this.room.code, this.selectedPlayer)
+            .subscribe({
+                next: () => { }
+            });
     }
 
     leaveRoom() {
@@ -101,5 +133,13 @@ export class GameComponent {
                     this.router.navigate(['/']);
                 }
             });
+    }
+
+    private resetCoutdown() {
+        this.countdown = this.room.time;
+        this.progressCountdown = 100;
+        this.selectedPlayer = '';
+        this.currentQuestionIndex++;
+        this.questionsAdvance = `${this.currentQuestionIndex}/${this.room.questions.length}`;
     }
 }

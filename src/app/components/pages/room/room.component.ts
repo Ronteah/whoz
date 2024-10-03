@@ -71,7 +71,7 @@ export class RoomComponent {
     }
 
     ngOnDestroy() {
-        if (!this.starting) {
+        if (!this.starting && this.isRoomOwner) {
             this.deleteRoom();
         }
     }
@@ -121,6 +121,7 @@ export class RoomComponent {
     }
 
     private deleteRoom() {
+        console.log('deleteRoom-room');
         this.roomsService.deleteRoom(this.roomCode)
             .subscribe({
                 next: () => {

@@ -1,10 +1,9 @@
 <div class="flex flex-col gap-8 items-center w-full h-[calc(100vh-4rem)]">
     <div class="flex justify-between items-center w-full">
         <div (click)="leaveRoom()">
-            <fa-icon [icon]="iconLeave" class="fa-3x"></fa-icon>
+            <fa-icon [icon]="iconLeave" class="fa-2x"></fa-icon>
         </div>
-        <img src="assets/images/logo.svg" alt="Logo Whoz"
-            class="w-20 my-4">
+        <p class="text-lg font-semibold">{{ questionsAdvance }}</p>
     </div>
     <div class="radial-progress"
         style="--size:104px; --thickness:0.5rem;"
@@ -14,8 +13,8 @@
             {{ countdown }}
         </span>
     </div>
-    <h1 class="text-2xl font-semibold">Qui pourrait devenir un acteur
-        hollywoodien ?</h1>
+    <h1 class="text-2xl font-semibold text-start w-full">{{ currentQuestion
+        }}</h1>
     <div
         class="grid grid-cols-1 gap-x-4 gap-y-4 w-full overflow-y-auto flex-grow"
         [class.grid-cols-2]="twoColumns">
