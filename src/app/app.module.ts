@@ -11,9 +11,10 @@ import { RoomComponent } from './components/pages/room/room.component';
 import { PlayerTileComponent } from './components/shared/player-tile/player-tile.component';
 import { GameComponent } from './components/pages/game/game.component';
 import { BaseComponent } from './components/shared/base/base.component';
+import { ContactComponent } from './components/pages/contact/contact.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, GamemodeCardComponent, RoomComponent, PlayerTileComponent, GameComponent, BaseComponent],
+  declarations: [AppComponent, HomeComponent, GamemodeCardComponent, RoomComponent, PlayerTileComponent, GameComponent, BaseComponent, ContactComponent],
   imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
   providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent],

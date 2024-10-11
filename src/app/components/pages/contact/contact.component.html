@@ -1,0 +1,51 @@
+<div class="flex flex-col gap-8 items-center w-full">
+    <img src="assets/images/logo.svg" alt="Logo Whoz"
+        class="w-44 my-4">
+    <div class="flex gap-4 items-center w-full justify-start"
+        (click)="backHome()">
+        <fa-icon [icon]="iconBack" class="fa-xl"></fa-icon>
+        <p class="text-base text-white">Revenir à l'écran d'accueil</p>
+    </div>
+    <div class="text-start">
+        <div role="alert" class="alert alert-info bg-dark border-none">
+            <h1 class="text-xl font-semibold text-white">À propos</h1>
+        </div>
+        <br /><br />
+        <p class="text-base font-light text-white">
+            Je suis Louis Georget, développeur fraîchement diplômé d'un Master
+            en Informatique. Sur mon temps libre, j'aime créer des applications
+            utiles et accessibles à tous. Ce passe-temps me permet d'inventer de
+            nouvelles idées tout en explorant et apprenant de nouvelles
+            technologies.<br /><br /> Avec ce projet, j'ai voulu proposer un jeu
+            qui, je l'espère, apportera du plaisir à ceux qui y joueront. C'est
+            pour moi
+            une façon de partager ce que j'aime et, dans le cadre de cette
+            application, de rendre vos soirées encore
+            plus amusantes et interactives !
+        </p>
+    </div>
+    <div class="flex gap-8 items-center">
+        <fa-icon [icon]="iconLinkedin" class="fa-3x"></fa-icon>
+        <fa-icon [icon]="iconTwitter" class="fa-3x"></fa-icon>
+        <fa-icon [icon]="iconInstagram" class="fa-3x"></fa-icon>
+    </div>
+    <div class="text-start">
+        <div role="alert" class="alert alert-info bg-dark border-none">
+            <h1 class="text-xl font-semibold text-white">Contacter</h1>
+        </div>
+        <br /><br />
+        <p class="text-base font-light text-white">
+            N'hésitez surtout pas à me contacter pour toute question,
+            suggestion, ou si vous avez rencontré un problème avec
+            l'application.<br /><br />
+            Vous pouvez m'envoyer un e-mail à l'adresse <a
+                href="mailto:llouis.georget@gmail.com"
+                class="text-primary underline">llouis.georget&#64;gmail.com</a>
+            ou directement me contacter sur les
+            réseaux sociaux. Je serai ravi de vous répondre et de vous aider !
+        </p>
+    </div>
+    <div>
+        <p class="text-sm font-light text-white opacity-25 mt-8">&#169; 2024</p>
+    </div>
+</div>
