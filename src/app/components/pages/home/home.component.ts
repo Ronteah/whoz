@@ -99,6 +99,7 @@ export class HomeComponent extends BaseComponent {
             .subscribe({
                 next: (data: any) => {
                     if (!!data) {
+                        console.log(data);
                         this.playersService.addPlayerToRoom(this.name, data.roomCode)
                             .pipe(takeUntil(this.ngUnsubscribe$))
                             .subscribe({
