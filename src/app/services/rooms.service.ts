@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { io } from 'socket.io-client';
 import { Room } from '../models/room.model';
+import { Result } from '../models/result.model';
 
 @Injectable({
     providedIn: 'root'
@@ -91,13 +92,58 @@ export class RoomsService {
                 observer.next(question);
             });
 
+            return () => {
+                this.socket.off(`nextQuestion-${roomCode}`);
+            };
+        });
+    }
+
+    listenToGameOver(roomCode: string): Observable<string> {
+        return new Observable<string>((observer) => {
             this.socket.on(`gameOver-${roomCode}`, () => {
                 observer.next('');
             });
 
             return () => {
-                this.socket.off(`nextQuestion-${roomCode}`);
                 this.socket.off(`gameOver-${roomCode}`);
+            };
+        });
+    }
+
+    nextResult(roomCode: string) {
+        return this.httpClient.get(`${this.apiUrl}/${roomCode}/results/next`)
+            .subscribe({
+                next: () => { }
+            });
+    }
+
+    previousResult(roomCode: string) {
+        return this.httpClient.get(`${this.apiUrl}/${roomCode}/results/previous`)
+            .subscribe({
+                next: () => { }
+            });
+    }
+
+    listenToNextResult(roomCode: string): Observable<Result> {
+        return new Observable<Result>((observer) => {
+            this.socket.on(`nextResult-${roomCode}`, (result: Result) => {
+                observer.next(result);
+            });
+
+            return () => {
+                this.socket.off(`nextResult-${roomCode}`);
+            };
+        });
+    }
+
+    listenToPreviousResult(roomCode: string): Observable<Result> {
+        return new Observable<Result>((observer) => {
+            this.socket.on(`previousResult-${roomCode}`, (result: Result) => {
+                observer.next(result);
+            });
+
+            return () => {
+                this.socket.off(`previousResult-${roomCode}`);
             };
         });
     }

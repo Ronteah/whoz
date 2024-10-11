@@ -22,6 +22,7 @@ export class GameComponent extends BaseComponent {
     currentQuestion = '';
     currentQuestionIndex = 1;
     questionsAdvance = '';
+    isGameOver = false;
 
     iconLeave = faClose;
 
@@ -87,13 +88,16 @@ export class GameComponent extends BaseComponent {
                         this.currentQuestion = data;
                         this.answered = false;
                         this.resetCoutdown();
-                    } else {
-                        if (this.room.owner === this.name) {
-                            this.leaveRoom();
-                        } else {
-                            this.router.navigate(['/']);
-                        }
                     }
+                }
+            });
+
+        this.roomsService.listenToGameOver(this.room.code)
+            .pipe(takeUntil(this.ngUnsubscribe$))
+            .subscribe({
+                next: () => {
+                    this.isGameOver = true;
+                    this.router.navigate(['/room', this.room.code, 'results']);
                 }
             });
 
@@ -108,7 +112,7 @@ export class GameComponent extends BaseComponent {
     override ngOnDestroy() {
         super.ngOnDestroy();
 
-        if (this.room.owner === this.name) {
+        if (this.room.owner === this.name && !this.isGameOver) {
             this.deleteRoom();
         }
     }

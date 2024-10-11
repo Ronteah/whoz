@@ -1,0 +1,21 @@
+<div class="flex flex-col gap-8 items-center w-full h-[calc(100vh-4rem)]">
+    <div class="flex justify-between items-center w-full">
+        <div (click)="leaveRoom()">
+            <fa-icon [icon]="iconLeave" class="fa-2x"></fa-icon>
+        </div>
+        <p class="text-lg font-semibold">{{ resultsAdvance }}</p>
+    </div>
+    <h1 class="text-2xl font-semibold text-start w-full">{{ question }}</h1>
+    <div class="w-full flex-grow">
+        <p *ngFor="let answer of answers">{{ answer.player
+            }}: {{ answer.count }}</p>
+    </div>
+    <footer *ngIf="isRoomOwner" class="w-full flex justify-between h-[10vh]">
+        <button class="btn btn-primary w-full text-base h-16"
+            [class.disabled]="currentResultIndex === 0"
+            (click)="previousResult()">Question précédente</button>
+        <button class="btn btn-primary w-full text-base h-16"
+            [class.disabled]="currentResultIndex === room.questions.length - 1"
+            (click)="nextResult()">Question suivante</button>
+    </footer>
+</div>
