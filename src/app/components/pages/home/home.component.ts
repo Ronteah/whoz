@@ -1,6 +1,7 @@
 import { RoomsService } from './../../../services/rooms.service';
 import { Component, } from '@angular/core';
 import { faRightToBracket, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
+import { faInstagram, faLinkedin, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { GamemodesService } from '../../../services/gamemodes.service';
 import { Gamemode } from '../../../models/gamemode.model';
 import { PlayersService } from '../../../services/players.service';
@@ -17,6 +18,9 @@ import { takeUntil } from 'rxjs';
 export class HomeComponent extends BaseComponent {
     iconCreate = faSquarePlus;
     iconJoin = faRightToBracket;
+    iconLinkedin = faLinkedin;
+    iconTwitter = faXTwitter;
+    iconInstagram = faInstagram;
 
     isCreation = true;
 
