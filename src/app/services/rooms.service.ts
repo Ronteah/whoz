@@ -79,13 +79,6 @@ export class RoomsService {
         });
     }
 
-    nextQuestion(roomCode: string) {
-        return this.httpClient.get(`${this.apiUrl}/${roomCode}/next`)
-            .subscribe({
-                next: () => { }
-            });
-    }
-
     listenToNextQuestion(roomCode: string): Observable<string> {
         return new Observable<string>((observer) => {
             this.socket.on(`nextQuestion-${roomCode}`, (question: string) => {
@@ -111,17 +104,11 @@ export class RoomsService {
     }
 
     nextResult(roomCode: string) {
-        return this.httpClient.get(`${this.apiUrl}/${roomCode}/results/next`)
-            .subscribe({
-                next: () => { }
-            });
+        return this.httpClient.get(`${this.apiUrl}/${roomCode}/results/next`);
     }
 
     previousResult(roomCode: string) {
-        return this.httpClient.get(`${this.apiUrl}/${roomCode}/results/previous`)
-            .subscribe({
-                next: () => { }
-            });
+        return this.httpClient.get(`${this.apiUrl}/${roomCode}/results/previous`);
     }
 
     listenToNextResult(roomCode: string): Observable<Result> {

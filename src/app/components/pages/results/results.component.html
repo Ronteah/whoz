@@ -18,11 +18,21 @@
         </canvas>
     </div>
     <footer *ngIf="isRoomOwner" class="w-full flex justify-between h-[10vh]">
-        <button class="btn btn-primary w-full text-base h-16"
-            [class.disabled]="currentResultIndex === 0"
-            (click)="previousResult()">Question précédente</button>
-        <button class="btn btn-primary w-full text-base h-16"
-            [class.disabled]="currentResultIndex === room.questions.length - 1"
-            (click)="nextResult()">Question suivante</button>
+        <button class="btn btn-primary text-base h-16"
+            [class.disabled]="currentResultIndex === 1"
+            (click)="previousResult()">
+            <div class="flex items-center gap-2">
+                <fa-icon [icon]="iconPrevious" class="fa-lg"></fa-icon>
+                <p class="font-bold text-lg">Précédent</p>
+            </div>
+        </button>
+        <button class="btn btn-primary text-base h-16"
+            [class.disabled]="currentResultIndex === room.questions.length"
+            (click)="nextResult()">
+            <div class="flex items-center gap-2">
+                <p class="font-bold text-lg">Suivant</p>
+                <fa-icon [icon]="iconNext" class="fa-lg"></fa-icon>
+            </div>
+        </button>
     </footer>
 </div>

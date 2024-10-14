@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PlayersService } from '../../../services/players.service';
 import { RoomsService } from '../../../services/rooms.service';
 import { takeUntil } from 'rxjs';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faClose } from '@fortawesome/free-solid-svg-icons';
 import { Result } from '../../../models/result.model';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -25,6 +25,11 @@ export class ResultsComponent extends BaseRoomComponent {
 
     isRoomOwner = false;
     iconLeave = faClose;
+
+    iconNext = faChevronRight;
+    iconPrevious = faChevronLeft;
+
+    chart: any;
 
     constructor(
         protected override readonly roomsService: RoomsService,
@@ -63,6 +68,7 @@ export class ResultsComponent extends BaseRoomComponent {
                         this.currentResult = data;
                         this.currentResultIndex++;
                         this.resultsAdvance = `${this.currentResultIndex}/${this.room.questions.length}`;
+                        this.processAnswers();
                     } else {
                         if (this.room.owner === this.name) {
                             this.leaveRoom();
@@ -81,6 +87,7 @@ export class ResultsComponent extends BaseRoomComponent {
                         this.currentResult = data;
                         this.currentResultIndex--;
                         this.resultsAdvance = `${this.currentResultIndex}/${this.room.questions.length}`;
+                        this.processAnswers();
                     } else {
                         if (this.room.owner === this.name) {
                             this.leaveRoom();
@@ -101,11 +108,19 @@ export class ResultsComponent extends BaseRoomComponent {
     }
 
     nextResult() {
-        this.roomsService.nextResult(this.roomCode);
+        this.roomsService.nextResult(this.roomCode)
+            .pipe(takeUntil(this.ngUnsubscribe$))
+            .subscribe({
+                next: () => { }
+            });
     }
 
     previousResult() {
-        this.roomsService.previousResult(this.roomCode);
+        this.roomsService.previousResult(this.roomCode)
+            .pipe(takeUntil(this.ngUnsubscribe$))
+            .subscribe({
+                next: () => { }
+            });
     }
 
     private processAnswers() {
@@ -122,7 +137,11 @@ export class ResultsComponent extends BaseRoomComponent {
     private createChart() {
         Chart.register(ChartDataLabels);
 
-        let chart = new Chart('chart', {
+        if (this.chart) {
+            this.chart.destroy();
+        }
+
+        this.chart = new Chart('chart', {
             type: 'doughnut',
             data: {
                 labels: this.answers.map(a => a.player),
