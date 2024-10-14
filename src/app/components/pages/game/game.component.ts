@@ -3,22 +3,19 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { Room } from '../../../models/room.model';
 import { RoomsService } from '../../../services/rooms.service';
 import { PlayersService } from '../../../services/players.service';
-import { Router } from '@angular/router';
-import { BaseComponent } from '../../shared/base/base.component';
+import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
+import { BaseRoomComponent } from '../../shared/base-room/base-room.component';
 
 @Component({
     selector: 'app-game',
     templateUrl: './game.component.html',
     styleUrl: './game.component.scss'
 })
-export class GameComponent extends BaseComponent {
-    players = [];
+export class GameComponent extends BaseRoomComponent {
     selectedPlayer = '';
     twoColumns = false;
     answered = false;
-    room!: Room;
-    roomCode = '';
     currentQuestion = '';
     currentQuestionIndex = 1;
     questionsAdvance = '';
@@ -30,14 +27,13 @@ export class GameComponent extends BaseComponent {
     progressCountdown = 100;
     stride = 0;
 
-    name = '';
-
     constructor(
-        private readonly roomsService: RoomsService,
-        private readonly playersService: PlayersService,
-        private readonly router: Router
+        protected override readonly roomsService: RoomsService,
+        protected override readonly playersService: PlayersService,
+        protected override readonly route: ActivatedRoute,
+        protected override readonly router: Router
     ) {
-        super();
+        super(roomsService, playersService, route, router);
     }
 
     ngOnInit() {
@@ -55,16 +51,6 @@ export class GameComponent extends BaseComponent {
                     }
                 },
                 error: () => this.router.navigate(['/'])
-            });
-
-        this.playersService.currentPlayer$
-            .pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe({
-                next: (name: string) => {
-                    if (!!name) {
-                        this.name = name;
-                    }
-                }
             });
 
         this.playersService.getPlayersFromRoom(this.room.code)
@@ -99,6 +85,7 @@ export class GameComponent extends BaseComponent {
             .subscribe({
                 next: () => {
                     this.isGameOver = true;
+
                     this.router.navigate(['/room', this.room.code, 'results']);
                 }
             });
@@ -129,30 +116,6 @@ export class GameComponent extends BaseComponent {
             .pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe({
                 next: () => { }
-            });
-    }
-
-    leaveRoom() {
-        this.playersService.removePlayerFromRoom(this.name, this.roomCode)
-            .pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe({
-                next: (data: any) => {
-                    if (data?.numberOfPlayersLeft === 0) {
-                        this.deleteRoom();
-                    } else {
-                        this.router.navigate(['/']);
-                    }
-                }
-            });
-    }
-
-    private deleteRoom() {
-        this.roomsService.deleteRoom(this.roomCode)
-            .pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe({
-                next: () => {
-                    this.router.navigate(['/']);
-                }
             });
     }
 

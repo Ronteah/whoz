@@ -5,10 +5,17 @@
         </div>
         <p class="text-lg font-semibold">{{ resultsAdvance }}</p>
     </div>
-    <h1 class="text-2xl font-semibold text-start w-full">{{ question }}</h1>
-    <div class="w-full flex-grow">
-        <p *ngFor="let answer of answers">{{ answer.player
-            }}: {{ answer.count }}</p>
+    <h1 class="text-4xl font-semibold text-start w-full pt-8">{{ question
+        }}</h1>
+    <div
+        class="w-full flex-grow flex items-center justify-around flex-col"
+        [class.pb-32]="!isRoomOwner">
+        <canvas id="chart" width="100%">
+            <p>Votre navigateur ne peut pas afficher le graphique.</p>
+            <p *ngFor="let answer of answers" class="font-bold text-lg">{{
+                answer.player
+                }} : {{ answer.count }} votes</p>
+        </canvas>
     </div>
     <footer *ngIf="isRoomOwner" class="w-full flex justify-between h-[10vh]">
         <button class="btn btn-primary w-full text-base h-16"

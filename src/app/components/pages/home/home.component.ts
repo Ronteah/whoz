@@ -56,6 +56,9 @@ export class HomeComponent extends BaseComponent {
                     }
                 }
             });
+
+        this.playersService.setCurrentPlayer('');
+        this.roomsService.setCurrentRoom(null as any);
     }
 
     toggleIsCreation() {

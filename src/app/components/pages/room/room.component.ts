@@ -5,20 +5,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PlayersService } from '../../../services/players.service';
 import { faCircleQuestion, faClock } from '@fortawesome/free-regular-svg-icons';
 import { faCheck, faCopy } from '@fortawesome/free-solid-svg-icons';
-import { BaseComponent } from '../../shared/base/base.component';
 import { takeUntil } from 'rxjs';
+import { BaseRoomComponent } from '../../shared/base-room/base-room.component';
 
 @Component({
     selector: 'app-room',
     templateUrl: './room.component.html',
     styleUrl: './room.component.scss'
 })
-export class RoomComponent extends BaseComponent {
-    roomCode = '';
-    room!: Room;
-    name = '';
-
-    players!: string[];
+export class RoomComponent extends BaseRoomComponent {
     isRoomOwner = false;
     canStart = false;
     starting = false;
@@ -30,22 +25,12 @@ export class RoomComponent extends BaseComponent {
     iconCheck = faCheck;
 
     constructor(
-        private readonly roomsService: RoomsService,
-        private readonly playersService: PlayersService,
-        private readonly route: ActivatedRoute,
-        private readonly router: Router
+        protected override readonly roomsService: RoomsService,
+        protected override readonly playersService: PlayersService,
+        protected override readonly route: ActivatedRoute,
+        protected override readonly router: Router
     ) {
-        super();
-
-        this.playersService.currentPlayer$
-            .pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe({
-                next: (name: string) => {
-                    if (!!name) {
-                        this.name = name;
-                    }
-                }
-            });
+        super(roomsService, playersService, route, router);
     }
 
     ngOnInit() {
@@ -121,30 +106,6 @@ export class RoomComponent extends BaseComponent {
             .pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe({
                 next: () => { }
-            });
-    }
-
-    leaveRoom() {
-        this.playersService.removePlayerFromRoom(this.name, this.roomCode)
-            .pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe({
-                next: (data: any) => {
-                    if (data?.numberOfPlayersLeft === 0) {
-                        this.deleteRoom();
-                    } else {
-                        this.router.navigate(['/']);
-                    }
-                }
-            });
-    }
-
-    private deleteRoom() {
-        this.roomsService.deleteRoom(this.roomCode)
-            .pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe({
-                next: () => {
-                    this.router.navigate(['/']);
-                }
             });
     }
 }

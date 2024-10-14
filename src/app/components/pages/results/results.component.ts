@@ -1,39 +1,38 @@
 import { Room } from './../../../models/room.model';
 import { Component } from '@angular/core';
-import { BaseComponent } from '../../shared/base/base.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlayersService } from '../../../services/players.service';
 import { RoomsService } from '../../../services/rooms.service';
 import { takeUntil } from 'rxjs';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { Result } from '../../../models/result.model';
+import Chart from 'chart.js/auto';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { BaseRoomComponent } from '../../shared/base-room/base-room.component';
 
 @Component({
     selector: 'app-results',
     templateUrl: './results.component.html',
     styleUrl: './results.component.scss'
 })
-export class ResultsComponent extends BaseComponent {
-    roomCode = '';
+export class ResultsComponent extends BaseRoomComponent {
     currentResult!: Result;
     currentResultIndex = 1;
     resultsAdvance = '';
-    room!: Room;
 
     question = '';
     answers: { player: string, count: number }[] = [];
 
-    name = '';
     isRoomOwner = false;
     iconLeave = faClose;
 
     constructor(
-        private readonly roomsService: RoomsService,
-        private readonly playersService: PlayersService,
-        private readonly route: ActivatedRoute,
-        private readonly router: Router
+        protected override readonly roomsService: RoomsService,
+        protected override readonly playersService: PlayersService,
+        protected override readonly route: ActivatedRoute,
+        protected override readonly router: Router
     ) {
-        super();
+        super(roomsService, playersService, route, router);
     }
 
     ngOnInit() {
@@ -54,16 +53,6 @@ export class ResultsComponent extends BaseComponent {
                     }
                 },
                 error: () => this.router.navigate(['/'])
-            });
-
-        this.playersService.currentPlayer$
-            .pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe({
-                next: (name: string) => {
-                    if (!!name) {
-                        this.name = name;
-                    }
-                }
             });
 
         this.roomsService.listenToNextResult(this.roomCode)
@@ -119,30 +108,6 @@ export class ResultsComponent extends BaseComponent {
         this.roomsService.previousResult(this.roomCode);
     }
 
-    leaveRoom() {
-        this.playersService.removePlayerFromRoom(this.name, this.roomCode)
-            .pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe({
-                next: (data: any) => {
-                    if (data?.numberOfPlayersLeft === 0) {
-                        this.deleteRoom();
-                    } else {
-                        this.router.navigate(['/']);
-                    }
-                }
-            });
-    }
-
-    private deleteRoom() {
-        this.roomsService.deleteRoom(this.roomCode)
-            .pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe({
-                next: () => {
-                    this.router.navigate(['/']);
-                }
-            });
-    }
-
     private processAnswers() {
         this.question = this.currentResult.question;
 
@@ -150,6 +115,66 @@ export class ResultsComponent extends BaseComponent {
             player,
             count: Number(count)
         }));
+
+        this.createChart();
+    }
+
+    private createChart() {
+        Chart.register(ChartDataLabels);
+
+        let chart = new Chart('chart', {
+            type: 'doughnut',
+            data: {
+                labels: this.answers.map(a => a.player),
+                datasets: [{
+                    data: this.answers.map(a => a.count),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FF6633', '#FF33FF', '#33FF33', '#3333FF'],
+                    borderWidth: 0,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        align: 'center',
+                        labels: {
+                            color: '#FAFAFA',
+                            font: {
+                                weight: 'normal',
+                                size: 18,
+                            },
+                            padding: 24
+                        }
+                    },
+                    tooltip: {
+                        enabled: false,
+                    },
+                    datalabels: {
+                        color: '#FAFAFA',
+                        font: {
+                            weight: 'normal',
+                            size: 14,
+                        },
+                        formatter: (value: any, context: any) => {
+                            const label = `${context.chart.data.labels[context.dataIndex]} : ${context.chart.data.datasets[0].data[context.dataIndex]}`;
+                            return label;
+                        },
+                        anchor: 'center',
+                        align: 'center',
+                        backgroundColor: '#0F1029',
+                        borderRadius: 4,
+                        padding: {
+                            top: 4,
+                            bottom: 4,
+                            left: 8,
+                            right: 8,
+                        }
+                    }
+                }
+            }
+        });
     }
 
 }
