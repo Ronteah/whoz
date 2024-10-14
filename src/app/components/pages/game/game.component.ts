@@ -53,7 +53,8 @@ export class GameComponent extends BaseComponent {
                         this.currentQuestion = room.questions[0].text;
                         this.questionsAdvance = `${this.currentQuestionIndex}/${this.room.questions.length}`;
                     }
-                }
+                },
+                error: () => this.router.navigate(['/'])
             });
 
         this.playersService.currentPlayer$
@@ -77,7 +78,8 @@ export class GameComponent extends BaseComponent {
                             this.twoColumns = true;
                         }
                     }
-                }
+                },
+                error: () => this.router.navigate(['/'])
             });
 
         this.roomsService.listenToNextQuestion(this.room.code)
@@ -112,7 +114,7 @@ export class GameComponent extends BaseComponent {
     override ngOnDestroy() {
         super.ngOnDestroy();
 
-        if (this.room.owner === this.name && !this.isGameOver) {
+        if (this.room?.owner === this.name && !this.isGameOver) {
             this.deleteRoom();
         }
     }

@@ -52,7 +52,8 @@ export class ResultsComponent extends BaseComponent {
                     } else {
                         this.router.navigate(['/']);
                     }
-                }
+                },
+                error: () => this.router.navigate(['/'])
             });
 
         this.playersService.currentPlayer$
@@ -105,7 +106,7 @@ export class ResultsComponent extends BaseComponent {
     override ngOnDestroy() {
         super.ngOnDestroy();
 
-        if (this.room.owner === this.name) {
+        if (this.room?.owner === this.name) {
             this.deleteRoom();
         }
     }
