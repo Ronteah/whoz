@@ -23,6 +23,7 @@ export class HomeComponent extends BaseComponent {
     iconInstagram = faInstagram;
 
     isCreation = true;
+    isServerDown = false;
 
     name = '';
     numberOfQuestions = 10;
@@ -54,6 +55,10 @@ export class HomeComponent extends BaseComponent {
                     if (!!data) {
                         this.gamemodes = data;
                     }
+                },
+                error: () => {
+                    this.gamemodes = [];
+                    this.isServerDown = true;
                 }
             });
 

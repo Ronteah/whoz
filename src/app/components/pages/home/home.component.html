@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-8 items-center w-full">
+<div *ngIf="!isServerDown" class="flex flex-col gap-8 items-center w-full">
     <div class="flex flex-col gap-8 items-center w-full">
         <img src="assets/images/logo.svg" alt="Logo Whoz"
             class="w-44 my-4">
@@ -117,5 +117,28 @@
                 <fa-icon [icon]="iconInstagram" class="fa-xl"></fa-icon></a>
         </div>
         <p class="text-sm font-light text-white opacity-25">&#169; 2024</p>
+    </div>
+</div>
+
+<div *ngIf="isServerDown" class="flex flex-col gap-8 items-center w-full">
+    <div class="flex flex-col gap-8 items-center w-full">
+        <img src="assets/images/logo.svg" alt="Logo Whoz"
+            class="w-44 my-4">
+        <div class="px-8 py-4 bg-error rounded-lg">
+            <h1 class="text-2xl font-semibold">Serveur innaccessible
+                !</h1>
+        </div>
+        <p class="text-base font-light">N'hésitez pas à me contacter / checker
+            sur mes réseaux pour plus de détails !</p>
+        <div class="flex gap-8 items-center">
+            <a href="https://www.linkedin.com/in/louis-georget/"
+                target="_blank">
+                <fa-icon [icon]="iconLinkedin" class="fa-3x"></fa-icon></a>
+            <a href="https://www.linkedin.com/in/louis-georget/"
+                target="_blank">
+                <fa-icon [icon]="iconTwitter" class="fa-3x"></fa-icon></a>
+            <a href="https://x.com/Ronteahri/" target="_blank">
+                <fa-icon [icon]="iconInstagram" class="fa-3x"></fa-icon></a>
+        </div>
     </div>
 </div>
