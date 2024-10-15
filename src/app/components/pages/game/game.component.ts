@@ -27,6 +27,8 @@ export class GameComponent extends BaseRoomComponent {
     progressCountdown = 100;
     stride = 0;
 
+    modalMessage = 'Êtes-vous sûr de vouloir quitter la salle ?';
+
     constructor(
         protected override readonly roomsService: RoomsService,
         protected override readonly playersService: PlayersService,
@@ -48,6 +50,12 @@ export class GameComponent extends BaseRoomComponent {
                         this.stride = 100 / room.time;
                         this.currentQuestion = room.questions[0].text;
                         this.questionsAdvance = `${this.currentQuestionIndex}/${this.room.questions.length}`;
+
+                        if (this.room.owner === this.name) {
+                            this.modalMessage = `Êtes-vous sûr de vouloir quitter la salle ?\n\n
+                            Note : Vous êtes le propriétaire de la salle,\n
+                            la salle sera supprimée si vous la quittez.`;
+                        }
                     }
                 },
                 error: () => this.router.navigate(['/'])

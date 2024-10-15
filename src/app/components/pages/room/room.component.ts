@@ -1,5 +1,4 @@
 import { Component, HostListener } from '@angular/core';
-import { Room } from '../../../models/room.model';
 import { RoomsService } from '../../../services/rooms.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlayersService } from '../../../services/players.service';
@@ -64,7 +63,17 @@ export class RoomComponent extends BaseRoomComponent {
         this.roomsService.listenToGameStarted(this.roomCode)
             .pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe(() => {
-                this.router.navigate([`room/${this.roomCode}/game`]);
+                this.roomsService.getRoomFromCode(this.roomCode)
+                    .pipe(takeUntil(this.ngUnsubscribe$))
+                    .subscribe({
+                        next: (data: any) => {
+                            if (!!data) {
+                                this.room = data;
+                                this.roomsService.setCurrentRoom(this.room);
+                                this.router.navigate([`room/${this.roomCode}/game`]);
+                            }
+                        }
+                    });
             });
     }
 

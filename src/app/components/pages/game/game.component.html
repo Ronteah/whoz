@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-8 items-center w-full h-[calc(100vh-4rem)]">
     <div class="flex justify-between items-center w-full">
-        <div (click)="leaveRoom()">
+        <div (click)="openModal()">
             <fa-icon [icon]="iconLeave" class="fa-2x"></fa-icon>
         </div>
         <p class="text-lg font-semibold">{{ questionsAdvance }}</p>
@@ -33,3 +33,9 @@
             'Valider votre réponse' : 'Faites votre choix' }}</button>
     </footer>
 </div>
+
+<app-modal *ngIf="showModal"
+    [title]="'Quitter la salle'"
+    [message]="modalMessage"
+    (confirmEmitter)="leaveRoom()"
+    (closeModalEmitter)="closeModal()"></app-modal>

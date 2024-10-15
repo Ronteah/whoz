@@ -19,6 +19,8 @@ export class BaseRoomComponent extends BaseComponent {
     room!: Room;
     players = [];
 
+    showModal = false;
+
     constructor(
         protected readonly roomsService: RoomsService,
         protected readonly playersService: PlayersService,
@@ -65,5 +67,13 @@ export class BaseRoomComponent extends BaseComponent {
                 },
                 error: () => this.router.navigate(['/'])
             });
+    }
+
+    openModal() {
+        this.showModal = true;
+    }
+
+    closeModal() {
+        this.showModal = false;
     }
 }

@@ -49,6 +49,12 @@
             (click)="startGame()">En attente</button>
         <button
             class="btn bg-transparent text-primary w-full border-none text-base"
-            (click)="leaveRoom()">Quitter</button>
+            (click)="openModal()">Quitter</button>
     </div>
 </div>
+
+<app-modal *ngIf="showModal"
+    [title]="'Quitter la salle'"
+    [message]="'Êtes-vous sûr de vouloir quitter la salle ?'"
+    (confirmEmitter)="leaveRoom()"
+    (closeModalEmitter)="closeModal()"></app-modal>
