@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -26,7 +26,19 @@
             content="Whoz est l'application parfaite pour les soirées entre potes. Répondez à une série de questions du genre : 'Qui est le plus intelligent ?', en choisissant le nom d'un de vos amis.">
         <meta name="twitter:image" content="favicon.ico">
     </head>
-    <body>
-        <app-root></app-root>
+    <body class="min-h-screen">
+        <app-root class="relative z-10"></app-root>
+        <svg class="background--custom" id="demo" viewBox="0 0 100 100"
+            preserveAspectRatio="none">
+            <path fill="#141535" fill-opacity="0.6"
+                d="M-100 -100L200 -100L200 60L-100 60Z"
+                style="animation: path0 10s linear infinite alternate;" />
+            <path fill="#0F1029" fill-opacity="0.7"
+                d="M-100 -100L200 -100L200 60L-100 60Z"
+                style="animation: path1 2.9761904761904763s linear infinite alternate;" />
+            <path fill="#17183A" fill-opacity="0.2"
+                d="M-100 -100L200 -100L200 80L-100 80Z"
+                style="animation: path2 12.195121951219512s linear infinite alternate;" />
+        </svg>
     </body>
 </html>
