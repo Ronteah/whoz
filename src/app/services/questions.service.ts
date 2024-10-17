@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Question } from '../models/question.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +10,12 @@ import { Question } from '../models/question.model';
 export class QuestionsService {
   questions$: BehaviorSubject<Question> = new BehaviorSubject<Question>({} as Question);
 
-  readonly apiUrl = 'http://localhost:3000/api/questions';
+  readonly API_URL = `${environment.API_URL}/api/questions`;
 
   constructor(private readonly httpClient: HttpClient) { }
 
   getQuestions() {
-    this.httpClient.get(this.apiUrl)
+    this.httpClient.get(this.API_URL)
       .subscribe({
         next: (data: any) => {
           if (!!data) {
@@ -27,14 +28,14 @@ export class QuestionsService {
   addQuestion(question: string) {
     let formData = new FormData();
     formData.append('question', question);
-    this.httpClient.post(`${this.apiUrl}/add`, formData)
+    this.httpClient.post(`${this.API_URL}/add`, formData)
       .subscribe(() => {
         this.getQuestions();
       });
   }
 
   deleteQuestion(id: string) {
-    this.httpClient.delete(`${this.apiUrl}/delete`, {
+    this.httpClient.delete(`${this.API_URL}/delete`, {
       params: { id }
     })
       .subscribe(() => {

@@ -4,13 +4,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { io } from 'socket.io-client';
 import { Room } from '../models/room.model';
 import { Result } from '../models/result.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class RoomsService {
-    readonly apiUrl = 'http://localhost:3000/api/rooms';
-    private socket = io('http://localhost:3000');
+    readonly API_URL = `${environment.API_URL}/api/rooms`;
+    private socket = io(environment.API_URL);
 
     currentRoom$: BehaviorSubject<Room> = new BehaviorSubject<Room>(
         JSON.parse(localStorage.getItem('currentRoom') as string)
@@ -28,7 +29,7 @@ export class RoomsService {
     }
 
     getRoomFromCode(code: string) {
-        return this.httpClient.get(`${this.apiUrl}/${code}`);
+        return this.httpClient.get(`${this.API_URL}/${code}`);
     }
 
     createRoom(numberOfQuestions: number, timeToAnswer: number, gamemodeId: any) {
@@ -38,13 +39,13 @@ export class RoomsService {
             gamemodeId
         };
 
-        return this.httpClient.post(`${this.apiUrl}/create`, body, {
+        return this.httpClient.post(`${this.API_URL}/create`, body, {
             headers: { 'Content-Type': 'application/json' }
         });
     }
 
     deleteRoom(roomCode: string) {
-        return this.httpClient.delete(`${this.apiUrl}/${roomCode}/delete`);
+        return this.httpClient.delete(`${this.API_URL}/${roomCode}/delete`);
     }
 
     startGame(roomCode: string, owner: string) {
@@ -52,7 +53,7 @@ export class RoomsService {
             owner
         };
 
-        return this.httpClient.post(`${this.apiUrl}/${roomCode}/start`, body, {
+        return this.httpClient.post(`${this.API_URL}/${roomCode}/start`, body, {
             headers: { 'Content-Type': 'application/json' }
         });
     }
@@ -62,7 +63,7 @@ export class RoomsService {
             answer
         };
 
-        return this.httpClient.post(`${this.apiUrl}/${roomCode}/answer`, body, {
+        return this.httpClient.post(`${this.API_URL}/${roomCode}/answer`, body, {
             headers: { 'Content-Type': 'application/json' }
         });
     }
@@ -104,11 +105,11 @@ export class RoomsService {
     }
 
     nextResult(roomCode: string) {
-        return this.httpClient.get(`${this.apiUrl}/${roomCode}/results/next`);
+        return this.httpClient.get(`${this.API_URL}/${roomCode}/results/next`);
     }
 
     previousResult(roomCode: string) {
-        return this.httpClient.get(`${this.apiUrl}/${roomCode}/results/previous`);
+        return this.httpClient.get(`${this.API_URL}/${roomCode}/results/previous`);
     }
 
     listenToNextResult(roomCode: string): Observable<Result> {
