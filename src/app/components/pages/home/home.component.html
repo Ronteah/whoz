@@ -1,4 +1,5 @@
-<div *ngIf="!isServerDown" class="flex flex-col gap-8 items-center w-full">
+<div *ngIf="!isServerDown && !isLoading"
+    class="flex flex-col gap-8 items-center w-full">
     <div class="flex flex-col gap-8 items-center w-full">
         <img src="assets/images/logo.svg" alt="Logo Whoz"
             class="w-44 my-4">
@@ -120,7 +121,8 @@
     </div>
 </div>
 
-<div *ngIf="isServerDown" class="flex flex-col gap-8 items-center w-full">
+<div *ngIf="isServerDown && !isLoading"
+    class="flex flex-col gap-8 items-center w-full">
     <div class="flex flex-col gap-8 items-center w-full">
         <img src="assets/images/logo.svg" alt="Logo Whoz"
             class="w-44 my-4">
@@ -140,5 +142,12 @@
             <a href="https://x.com/Ronteahri/" target="_blank">
                 <fa-icon [icon]="iconInstagram" class="fa-3x"></fa-icon></a>
         </div>
+    </div>
+</div>
+
+<div *ngIf="isLoading" class="w-screen h-dvh">
+    <div class="flex justify-center items-center w-full h-full">
+        <img src="assets/images/loader.svg" alt="Loading"
+            class="w-44 my-4">
     </div>
 </div>

@@ -32,7 +32,7 @@
     <div *ngIf="!!players"
         class="relative w-full flex flex-col items-start gap-4">
         <h1 class="text-lg font-light">Participants : {{ players.length }}</h1>
-        <div class="w-full h-[55vh] overflow-y-auto flex flex-col gap-4">
+        <div class="w-full h-[55dvh] overflow-y-auto flex flex-col gap-4">
             <app-player-tile *ngFor="let player of players" [name]="player"
                 [currentPlayer]="name"
                 class="w-full"></app-player-tile>

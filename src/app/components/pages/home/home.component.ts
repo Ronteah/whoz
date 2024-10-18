@@ -24,6 +24,7 @@ export class HomeComponent extends BaseComponent {
 
     isCreation = true;
     isServerDown = false;
+    isLoading = true;
 
     name = '';
     numberOfQuestions = 10;
@@ -54,11 +55,13 @@ export class HomeComponent extends BaseComponent {
                 next: (data: any) => {
                     if (!!data) {
                         this.gamemodes = data;
+                        this.isLoading = false;
                     }
                 },
                 error: () => {
                     this.gamemodes = [];
                     this.isServerDown = true;
+                    this.isLoading = false;
                 }
             });
 

@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-8 items-center w-full h-[calc(100vh-4rem)]">
+<div class="flex flex-col gap-8 items-center w-full h-[calc(100dvh-4rem)]">
     <div class="flex justify-between items-center w-full">
         <div (click)="openModal()">
             <fa-icon [icon]="iconLeave" class="fa-2x"></fa-icon>
@@ -17,7 +17,7 @@
                 }} : {{ answer.count }} votes</p>
         </canvas>
     </div>
-    <footer *ngIf="isRoomOwner" class="w-full flex justify-between h-[10vh]">
+    <footer *ngIf="isRoomOwner" class="w-full flex justify-between h-[10dvh]">
         <button class="btn btn-primary text-base h-16"
             [class.disabled]="currentResultIndex === 1"
             (click)="previousResult()">
